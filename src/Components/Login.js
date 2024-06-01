@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { axiosPost } from '../Services/UseServices';
 import { useNavigate } from 'react-router-dom';
+import baseURL from '../Services/CutomizeAxios';
 
 function Login(props) {
+    const { toast } = props;
     const [username, setUsername] = useState('');
+
     const navigate = useNavigate();
     const hanldeSubmit = async (e) => {
         e.preventDefault();
@@ -12,7 +15,9 @@ function Login(props) {
         })
             .then((res) => {
                 localStorage.setItem('accessToken', res.data.accessToken);
+                baseURL.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
                 navigate('/');
+                toast.success('Đăng nhập thành công !');
             })
             .catch((err) => {
                 console.log(err);

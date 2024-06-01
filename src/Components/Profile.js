@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import _ from 'lodash';
@@ -10,13 +11,16 @@ import {
     faArrowDownShortWide,
     faBars,
 } from '@fortawesome/free-solid-svg-icons';
-import { axiosDelete, axiosGet, axiosPatch, axiosPost } from '../Services/UseServices';
+import { axiosDelete, axiosGet, axiosPost } from '../Services/UseServices';
 import Pagination from './Pagination';
 import path from './Path';
+import EditPost from './EditPost';
 function Profile(props) {
+    const { toast } = props;
     const [posts, setPosts] = useState([]);
     const [getTags, setGetTags] = useState([]);
     const [showAdd, setShowAdd] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [tags, setTags] = useState([]);
@@ -24,16 +28,13 @@ function Profile(props) {
     const [totalPage, setTotalPage] = useState(0);
     const [totalPageSize, setTotalPageSize] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchs, setSearchs] = useState('');
-    const [succeSearch, setSucceSearch] = useState([]);
+    const [editPost, setEditPosts] = useState([]);
     const [showSort, setShowSort] = useState(true);
     const [showMenu, setShowMenu] = useState(false);
 
     const navigate = useNavigate();
     useEffect(() => {
         hanldeGetPosts();
-        // bỏ warning React Hook useEffect has a missing dependency
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
 
     const hanldeGetPosts = async () => {
@@ -58,23 +59,19 @@ function Profile(props) {
             });
     };
 
-    const handlEdit = async (id) => {
-        await axiosPatch(`posts/${id}`, {
-            title: 'Edit title',
-            description: 'Edit description',
-        })
-            .then((res) => {
-                hanldeGetPosts();
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const handlEdit = (edititem) => {
+        setShowEdit(true);
+        const edit = posts.filter((item) => item.id === edititem.id);
+        if (edit) {
+            setEditPosts(edit);
+        }
     };
 
     const handlDelete = async (id) => {
         await axiosDelete(`posts/${id}`)
             .then((res) => {
                 setPosts(posts.filter((post) => post.id !== id));
+                toast.success('Xóa thành công !');
             })
             .catch((err) => {
                 console.log(err);
@@ -93,6 +90,7 @@ function Profile(props) {
                 setTitle('');
                 setTags('');
                 hanldeGetPosts();
+                toast.success('Thêm posts thành công !');
             })
             .catch((err) => {
                 console.log(err);
@@ -107,20 +105,21 @@ function Profile(props) {
         }
     };
 
-    const filteredPosts = posts.filter((item) => {
-        return item.title.toLowerCase().includes(searchs.toLowerCase());
-    });
+    // const filteredPosts = posts.filter((item) => {
+    //     return item.title.toLowerCase().includes(searchs.toLowerCase());
+    // });
 
-    const HandleSearch = () => {
-        setSucceSearch(filteredPosts);
-        setSearchs('');
-    };
+    // const HandleSearch = () => {
+    //     setSucceSearch(filteredPosts);
+    //     setSearchs('');
+    // };
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            HandleSearch();
-        }
-    };
+    // const handleKeyPress = (e) => {
+    //     if (e.key === 'Enter') {
+    //         HandleSearch();
+    //     }
+    // };
+
     const hanldeLogout = async () => {
         await axiosDelete('/auth/logout')
             .then((res) => {
@@ -155,19 +154,19 @@ function Profile(props) {
                 </div>
                 <div className="flex flex-col flex-grow py-4 overflow-auto">
                     <NavLink
-                        className="flex px-6 hover:text-black items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
+                        className="flex  hover:text-black items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
                         to={path.Home}
                     >
                         <span className="leading-none">Home</span>
                     </NavLink>
                     <NavLink
-                        className="flex px-6 hover:text-black items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
+                        className="flex  hover:text-black items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
                         to={path.Profile}
                     >
                         <span className="leading-none">Posts</span>
                     </NavLink>
                     <li
-                        className="flex cursor-pointer px-6 items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
+                        className="flex cursor-pointer  items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
                         onClick={hanldeLogout}
                     >
                         <span className="leading-none">Logout</span>
@@ -191,19 +190,19 @@ function Profile(props) {
                 </div>
                 <div className="flex flex-col flex-grow py-4 overflow-auto">
                     <NavLink
-                        className="flex px-6 hover:text-black items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
+                        className="flex  hover:text-black items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
                         to={path.Home}
                     >
                         <span className="leading-none">Home</span>
                     </NavLink>
                     <NavLink
-                        className="flex px-6 hover:text-black items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
+                        className="flex  hover:text-black items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
                         to={path.Profile}
                     >
                         <span className="leading-none">Posts</span>
                     </NavLink>
                     <li
-                        className="flex cursor-pointer px-6 items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
+                        className="flex cursor-pointer  items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300"
                         onClick={hanldeLogout}
                     >
                         <span className="leading-none">Logout</span>
@@ -230,9 +229,9 @@ function Profile(props) {
                         </div>
                         <input
                             placeholder="title"
-                            value={searchs}
-                            onChange={(event) => setSearchs(event.target.value)}
-                            onKeyDown={handleKeyPress}
+                            // value={searchs}
+                            // onChange={(event) => setSearchs(event.target.value)}
+                            // onKeyDown={handleKeyPress}
                             className="border border-[#000000] hover:border-indigo-500/75  rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-violet-300 "
                         />
                     </div>
@@ -240,7 +239,7 @@ function Profile(props) {
                     <div className="grid  gap-6">
                         <table className={'border-collapse border-black border p-2  '}>
                             <thead className="border-collapse border-black border p-2 ">
-                                <tr className="border-collapse border-black border p-2 p-2">
+                                <tr className="border-collapse border-black border p-2">
                                     <th className="bg-[#ddd]  text-center border-collapse border-black border p-2">
                                         ID
                                     </th>
@@ -266,79 +265,80 @@ function Profile(props) {
                                     <th className="bg-[#ddd] text-center border-collapse border-black border p-2">
                                         Tags
                                     </th>
-                                    <th className="text-center bg-[#ddd] text-center border-collapse border-black border p-2 text-center">
+                                    <th className=" bg-[#ddd] border-collapse border-black border p-2 text-center">
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {succeSearch.length > 0
-                                    ? succeSearch.map((post, index) => (
-                                          <tr key={post.id} className="border-collapse border-black border  p-2 p-2">
-                                              <td className="border-collapse border-black border border p-2 text-center">
-                                                  {index + 1}
-                                                  {post.id}
-                                              </td>
-                                              <td className="border-collapse border-black border p-2 text-center">
-                                                  {post.title}
-                                              </td>
-                                              <td className="border-collapse border-black border p-2 ">
-                                                  {post.description}
-                                              </td>
-                                              <td className="border-collapse border-black border p-2 text-center">
-                                                  {post.tags.map((tag, index) => (
-                                                      <span key={index}>{index === 0 ? `${tag}` : `, ${tag}`}</span>
-                                                  ))}
-                                              </td>
-                                              <td className="border-collapse border-black border p-2 text-center">
-                                                  <div className="flex justify-around">
-                                                      <FontAwesomeIcon
-                                                          className="text-[#9C69E2] cursor-pointer hover:text-[#F063B8] hover:transition-all hover:duration-300"
-                                                          icon={faPen}
-                                                          onClick={() => handlEdit(post.id)}
-                                                      />
-                                                      <FontAwesomeIcon
-                                                          className="text-[#9C69E2] cursor-pointer hover:text-[#F063B8] hover:transition-all hover:duration-300"
-                                                          icon={faTrash}
-                                                          onClick={() => handlDelete(post.id)}
-                                                      />
-                                                  </div>
-                                              </td>
-                                          </tr>
-                                      ))
-                                    : posts.map((post, index) => (
-                                          <tr key={post.id} className="border-collapse border-black border  p-2 p-2">
-                                              <td className="border-collapse border-black border border p-2 text-center">
-                                                  {index + 1}
-                                                  {post.id}
-                                              </td>
-                                              <td className="border-collapse border-black border p-2 text-center">
-                                                  {post.title}
-                                              </td>
-                                              <td className="border-collapse border-black border p-2 ">
-                                                  {post.description}
-                                              </td>
-                                              <td className="border-collapse border-black border p-2 text-center">
-                                                  {post.tags.map((tag, index) => (
-                                                      <span key={index}>{index === 0 ? `${tag}` : `, ${tag}`}</span>
-                                                  ))}
-                                              </td>
-                                              <td className="border-collapse border-black border p-2 text-center">
-                                                  <div className="flex justify-around">
-                                                      <FontAwesomeIcon
-                                                          className="text-[#9C69E2] cursor-pointer hover:text-[#F063B8] hover:transition-all hover:duration-300"
-                                                          icon={faPen}
-                                                          onClick={() => handlEdit(post.id)}
-                                                      />
-                                                      <FontAwesomeIcon
-                                                          className="text-[#9C69E2] cursor-pointer hover:text-[#F063B8] hover:transition-all hover:duration-300"
-                                                          icon={faTrash}
-                                                          onClick={() => handlDelete(post.id)}
-                                                      />
-                                                  </div>
-                                              </td>
-                                          </tr>
-                                      ))}
+                                {posts.length > 0 &&
+                                    // ? succeSearch.map((post, index) => (
+                                    //       <tr key={post.id} className="border-collapse border-black border  p-2">
+                                    //           <td className="border-collapse border-black border  p-2 text-center">
+                                    //               {index + 1}
+                                    //               {post.id}
+                                    //           </td>
+                                    //           <td className="border-collapse border-black border p-2 text-center">
+                                    //               {post.title}
+                                    //           </td>
+                                    //           <td className="border-collapse border-black border p-2 ">
+                                    //               {post.description}
+                                    //           </td>
+                                    //           <td className="border-collapse border-black border p-2 text-center">
+                                    //               {post.tags.map((tag, index) => (
+                                    //                   <span key={index}>{index === 0 ? `${tag}` : `, ${tag}`}</span>
+                                    //               ))}
+                                    //           </td>
+                                    //           <td className="border-collapse border-black border p-2 text-center">
+                                    //               <div className="flex justify-around">
+                                    //                   <FontAwesomeIcon
+                                    //                       className="text-[#9C69E2] cursor-pointer hover:text-[#F063B8] hover:transition-all hover:duration-300"
+                                    //                       icon={faPen}
+                                    //                       onClick={() => handlEdit(post.id)}
+                                    //                   />
+                                    //                   <FontAwesomeIcon
+                                    //                       className="text-[#9C69E2] cursor-pointer hover:text-[#F063B8] hover:transition-all hover:duration-300"
+                                    //                       icon={faTrash}
+                                    //                       onClick={() => handlDelete(post.id)}
+                                    //                   />
+                                    //               </div>
+                                    //           </td>
+                                    //       </tr>
+                                    //   ))
+                                    // :
+                                    posts.map((post, index) => (
+                                        <tr key={post.id} className="border-collapse border-black border  p-2 ">
+                                            <td className="border-collapse border-black border  p-2 text-center">
+                                                {index + 1}
+                                                {post.id}
+                                            </td>
+                                            <td className="border-collapse border-black border p-2 text-center">
+                                                {post.title}
+                                            </td>
+                                            <td className="border-collapse border-black border p-2 ">
+                                                {post.description}
+                                            </td>
+                                            <td className="border-collapse border-black border p-2 text-center">
+                                                {post.tags.map((tag, index) => (
+                                                    <span key={index}>{index === 0 ? `${tag}` : `, ${tag}`}</span>
+                                                ))}
+                                            </td>
+                                            <td className="border-collapse border-black border p-2 text-center">
+                                                <div className="flex justify-around">
+                                                    <FontAwesomeIcon
+                                                        className="text-[#9C69E2] cursor-pointer hover:text-[#F063B8] hover:transition-all hover:duration-300"
+                                                        icon={faPen}
+                                                        onClick={() => handlEdit(post)}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="text-[#9C69E2] cursor-pointer hover:text-[#F063B8] hover:transition-all hover:duration-300"
+                                                        icon={faTrash}
+                                                        onClick={() => handlDelete(post.id)}
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>
@@ -354,7 +354,7 @@ function Profile(props) {
 
             {showAdd && (
                 <div className="main-modal bg-[#050505b3] fixed w-full inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster">
-                    <div className="border border-blue-500 shadow-lg modal-container bg-white md:w-4/12 xs:w-[300px] md:max-w-11/12 mx-auto rounded-xl shadow-lg z-50 overflow-y-auto">
+                    <div className="border border-blue-500  modal-container bg-white md:w-4/12 xs:w-[300px] md:max-w-11/12 mx-auto rounded-xl shadow-lg z-50 overflow-y-auto">
                         <div className="modal-content py-4 text-left px-6">
                             <div className="flex justify-between items-center pb-3">
                                 <p className="text-2xl font-bold text-gray-500">Add posts</p>
@@ -429,7 +429,7 @@ function Profile(props) {
                                     </div>
                                 </form>
                             </div>
-                            <div className="flex justify-end pt-2 space-x-14">
+                            <div className="flex justify-end pt-2 ">
                                 <button
                                     onClick={() => setShowAdd(false)}
                                     className="px-4 bg-gray-200 p-3 rounded text-black hover:bg-gray-300 font-semibold"
@@ -446,6 +446,16 @@ function Profile(props) {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {showEdit && editPost.length > 0 && (
+                <EditPost
+                    getTags={getTags}
+                    setShowEdit={setShowEdit}
+                    editPost={editPost}
+                    hanldeGetPosts={hanldeGetPosts}
+                    toast={toast}
+                />
             )}
         </div>
     );

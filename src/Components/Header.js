@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/Image/image1.png';
+import logo1 from '../assets/Image/img5.png';
 import path from './Path';
 import { axiosDelete } from '../Services/UseServices';
 
@@ -47,29 +48,36 @@ function Header(props) {
                 )}
             </div>
 
-            <div className="flex relative h-[402px]">
+            <div className="lg:flex max-lg:text-center relative lg:h-[402px]">
                 <div className="xl:w-[640px] xs:w-auto z-10 m-2.5">
                     <h1 className="text-[#212353] leading-none text-3xl  xl:text-[80px] font-bold">
                         Save your data storage here.
                     </h1>
-                    <p className="text-[#4B5D68] sm:w-[378px] xs:w-auto  text-lg my-4">
+                    <p className="text-[#4B5D68] lg:w-[378px] xs:w-auto  text-lg my-4">
                         Data Warehouse is a data storage area that has been tested for security, so you can store your
                         data here safely but not be afraid of being stolen by others.
                     </p>
-                    <button className="bg-[#9C69E2] w-28 hover:bg-[#F063B8] hover:transition-all hover:duration-300 text-white h-[50px] w-[168px] rounded-[50px]">
+                    <button className="bg-[#9C69E2] hover:bg-[#F063B8] hover:transition-all hover:duration-300 text-white h-[50px] w-[168px] rounded-[50px]">
                         Learn more
                     </button>
                 </div>
 
-                <div
-                    className="md:w-[700px] xs:w-full h-[402px] absolute right-0 md:shadow-none xs:shadow-2xl"
-                    style={{
-                        backgroundImage: `url(${logo})`,
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center center',
-                    }}
-                ></div>
+                <div className="lg:w-[700px] xs:w-full h-[402px] lg:absolute right-0 ">
+                    <img src={logo} alt="" />
+                </div>
+            </div>
+
+            <div className="lg:flex xs:block max-lg:m-auto bg-[#f063b826] rounded-[50px] max-sm:px-10 px-20 py-10 my-20 gap-4 items-center">
+                <img src={logo1} alt="" />
+                <div>
+                    <h1 className="text-4xl font-bold mb-6">We are a high-level data storage bank</h1>
+                    <p>
+                        The place to store various data that you can access at any time through the internet and where
+                        you can carry it. This very flexible storage area has a high level of security. To enter into
+                        your own data you must enter the password that you created when you registered in this Data
+                        Warehouse.
+                    </p>
+                </div>
             </div>
         </div>
     );
