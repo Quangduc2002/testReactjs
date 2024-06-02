@@ -54,7 +54,7 @@ function Content(props) {
                     Warehouse.
                 </p>
             </div>
-            <div className="grid lg:grid-cols-2 xs:grid-cols-1 gap-8">
+            <div className="grid md:grid-cols-2 xs:grid-cols-1 gap-8">
                 {Features.map((feature) => {
                     return (
                         <div
@@ -68,10 +68,10 @@ function Content(props) {
                                 <img src={feature.image} alt="" />
                             </div>
                             <div className="max-w-[220px]">
-                                <h3 className="h3 mb-4">{feature.title}</h3>
+                                <h3 className="h3 mb-4 max-lg:text-center">{feature.title}</h3>
                                 <p className="font-light italic mb-4">{feature.text}</p>
-                                <div className="flex items-center gap-x-2 group">
-                                    <div className="flex items-center">
+                                <div className="flex items-center gap-x-2 group max-lg:justify-center">
+                                    <div className="flex items-center ">
                                         <span className="text-[#212353] hover:text-[#9C69E2] cursor-pointer hover:transition-all hover:duration-300">
                                             Learn more
                                         </span>

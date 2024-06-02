@@ -62,7 +62,7 @@ function Header(props) {
                     </button>
                 </div>
 
-                <div className="lg:w-[700px] xs:w-full h-[402px] lg:absolute right-0 ">
+                <div className="lg:w-[700px] xs:w-full lg:absolute right-0 ">
                     <img src={logo} alt="" />
                 </div>
             </div>
