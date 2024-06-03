@@ -48,23 +48,32 @@ function Content(props) {
     return (
         <div className="my-20">
             <div className="sm:w-[576px] xs:w-auto text-center m-auto">
-                <h1 className="text-[40px] font-bold">Features</h1>
-                <p className="text-lg text-[#4B5D68] my-10">
+                <h1 className="text-[40px] font-bold" data-aos="fade-down" data-aos-delay="700">
+                    Features
+                </h1>
+                <p className="text-lg text-[#4B5D68] my-10" data-aos="fade-down" data-aos-delay="500">
                     Some of the features and advantages that we provide for those of you who store data in this Data
                     Warehouse.
                 </p>
             </div>
+
             <div className="grid md:grid-cols-2 xs:grid-cols-1 gap-8">
                 {Features.map((feature) => {
                     return (
                         <div
+                            data-aos="zoom-in"
+                            data-aos-delay="800"
                             key={feature.id}
                             className="w-full max-w-[530px] h-[358px] relative flex max-lg:flex-col items-center justify-center xl:flex-row xl:justify-start mx-auto aos-init aos-animate"
                         >
                             <div className="max-lg:hidden flex absolute top-0 right-0 -z-10">
                                 <img src={feature.bgImage} alt="" />
                             </div>
-                            <div className="max-lg:max-w-[120px] xl:mr-7 max-w-[232px] ">
+                            <div
+                                className="max-lg:max-w-[120px] xl:mr-7 max-w-[232px] "
+                                data-aos="zoom-in"
+                                data-aos-delay="800"
+                            >
                                 <img src={feature.image} alt="" />
                             </div>
                             <div className="max-w-[220px]">

@@ -15,6 +15,7 @@ import { axiosDelete, axiosGet, axiosPost } from '../Services/UseServices';
 import Pagination from './Pagination';
 import path from './Path';
 import EditPost from './EditPost';
+
 function Profile(props) {
     const { toast } = props;
     const [posts, setPosts] = useState([]);

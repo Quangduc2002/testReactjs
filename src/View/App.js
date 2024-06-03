@@ -1,14 +1,24 @@
-import './App.css';
-import Home from './Home';
+import { useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
+import './App.css';
+import Home from './Home';
 import Login from '../Components/Login';
 import { Route, Routes } from 'react-router-dom';
 import path from '../Components/Path';
 import Profile from '../Components/Profile';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
+    useEffect(() => {
+        Aos.init({
+            duration: 1000,
+            easing: 'ease-in-sine',
+        });
+    }, []);
     return (
         <div className="App">
             <Routes>

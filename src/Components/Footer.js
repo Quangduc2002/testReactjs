@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function Footer(props) {
     return (
-        <div className="bg-white dark:bg-gray-900 border-t-2 mb-10">
+        <div className="bg-white dark:bg-gray-900 border-t-2 mb-10" data-aos="fade-up" data-aos-delay="500">
             <div className="mx-auto w-full max-w-screen-xl">
                 <div className="grid grid-cols-2 gap-8  py-10 lg:py-8 md:grid-cols-4">
                     <div>
@@ -92,11 +92,6 @@ function Footer(props) {
                             <li className="w-12 h-12 bg-[#e5e7eb] rounded-full"></li>
                         </ul>
                     </div>
-                </div>
-                <div className="md:w-[360px] md:flex md:items-center md:justify-between">
-                    <span className="text-sm text-gray-500 dark:text-gray-300 ">
-                        © Datawarehouse™, 2020. All rights reserved. Company Registration Number: 21479524.
-                    </span>
                 </div>
             </div>
         </div>

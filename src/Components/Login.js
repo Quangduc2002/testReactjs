@@ -10,10 +10,11 @@ function Login(props) {
     const navigate = useNavigate();
     const hanldeSubmit = async (e) => {
         e.preventDefault();
-        axiosPost('/auth/login', {
+        await axiosPost('/auth/login', {
             username: username,
         })
             .then((res) => {
+                console.log(res);
                 localStorage.setItem('accessToken', res.data.accessToken);
                 baseURL.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
                 navigate('/');

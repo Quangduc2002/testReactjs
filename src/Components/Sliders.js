@@ -43,7 +43,7 @@ function Sliders(props) {
         },
     ];
     return (
-        <div className="bg-[#9C69E2] rounded-[50px] md:p-20 xs:p-10 mb-20 ">
+        <div className="bg-[#9C69E2] rounded-[50px] md:p-20 xs:p-10 mb-20 " data-aos="fade-up" data-aos-delay="500">
             <h1 className="text-[40px] font-bold text-white mb-10 xs:text-2xl">Testimonials</h1>
             <Slider {...settings}>
                 {showSliders.map((slider) => {
