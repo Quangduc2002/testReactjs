@@ -28,7 +28,7 @@ function Profile(props) {
     const [totalProduct, setTotalProduct] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [totalPageSize, setTotalPageSize] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState('');
     const [editPost, setEditPosts] = useState([]);
     const [showSort, setShowSort] = useState(true);
     const [showMenu, setShowMenu] = useState(false);
@@ -36,24 +36,27 @@ function Profile(props) {
     const navigate = useNavigate();
     useEffect(() => {
         hanldeGetPosts();
+        hanldeGetTags();
     }, [currentPage]);
 
     const hanldeGetPosts = async () => {
-        await axiosGet(`/posts?page=${currentPage}`)
+        await axiosGet(`/posts?page=${currentPage ? currentPage : 1}`)
             .then((res) => {
-                setPosts(res.data.posts);
-                setTotalProduct(res.data.total);
-                setTotalPage(res.data.total_page);
-                setTotalPageSize(res.data.page_size);
-                setCurrentPage(res.data.current_page);
+                setPosts(res?.data?.posts);
+                setTotalProduct(res?.data?.total);
+                setTotalPage(res?.data?.total_page);
+                setTotalPageSize(res?.data?.page_size);
+                setCurrentPage(res?.data?.current_page);
             })
             .catch((err) => {
                 console.log(err);
             });
+    };
 
+    const hanldeGetTags = async () => {
         await axiosGet('/posts/tags')
             .then((res) => {
-                setGetTags(res.data);
+                setGetTags(res?.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -272,7 +275,7 @@ function Profile(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {posts.length > 0 &&
+                                {posts?.length > 0 &&
                                     // ? succeSearch.map((post, index) => (
                                     //       <tr key={post.id} className="border-collapse border-black border  p-2">
                                     //           <td className="border-collapse border-black border  p-2 text-center">
@@ -449,7 +452,7 @@ function Profile(props) {
                 </div>
             )}
 
-            {showEdit && editPost.length > 0 && (
+            {showEdit && editPost?.length > 0 && (
                 <EditPost
                     getTags={getTags}
                     setShowEdit={setShowEdit}

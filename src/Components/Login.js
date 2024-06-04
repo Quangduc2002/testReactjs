@@ -10,19 +10,21 @@ function Login(props) {
     const navigate = useNavigate();
     const hanldeSubmit = async (e) => {
         e.preventDefault();
-        await axiosPost('/auth/login', {
-            username: username,
-        })
-            .then((res) => {
-                console.log(res);
+        try {
+            const res = await axiosPost('/auth/login', {
+                username: username,
+            });
+
+            if (res && res.data && res.data.accessToken) {
                 localStorage.setItem('accessToken', res.data.accessToken);
+                localStorage.setItem('refreshToken', res.data.refreshToken);
                 baseURL.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
                 navigate('/');
                 toast.success('Đăng nhập thành công !');
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -33,7 +35,7 @@ function Login(props) {
             </div>
 
             <div className="flex items-center justify-center h-full ">
-                <div>
+                <form onSubmit={hanldeSubmit}>
                     <h1 className="font-normal text-4xl text-center">Sign In</h1>
                     <div className="my-6">
                         <label htmlFor="username" className="text-base">
@@ -49,12 +51,13 @@ function Login(props) {
                         />
                     </div>
                     <button
-                        onClick={hanldeSubmit}
+                        // onClick={hanldeSubmit}
+                        type="submit"
                         className="w-full py-3 text-white bg-[#9C69E2] hover:bg-[#F063B8] hover:transition-all hover:duration-300 cursor-pointer  rounded-[50px]"
                     >
                         Sign In
                     </button>
-                </div>
+                </form>
             </div>
         </div>
     );

@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
+import { axiosPost } from './UseServices';
+
 import axios from 'axios';
 const instance = axios.create({
-    // baseURL: 'https://agiletech-test-api.zeabur.app',
     baseURL: 'https://api-test-web.agiletech.vn',
 });
 
@@ -14,42 +15,31 @@ instance.interceptors.request.use(
         return Promise.reject(error);
     },
 );
-let isRefreshing = false;
-instance.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const originalRequest = error.config;
-        if (error.response.status === 401 && !originalRequest._retry) {
-            const refreshToken = localStorage.getItem('refreshToken');
-            return new Promise((resolve, reject) => {
-                axios
-                    .post('/auth/refreshToken', { token: refreshToken })
-                    .then(({ data }) => {
-                        localStorage.setItem('accessToken', data.accessToken);
-                        instance.defaults.headers.common['Authorization'] = `bearer ${data.accessToken}`;
-                        originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
 
-                        resolve(instance(originalRequest));
-                    })
-                    .catch((err) => {
-                        reject(err);
-                    })
-                    .then(() => {
-                        isRefreshing = false;
-                    });
-            });
-        }
+// instance.interceptors.response.use(
+//     (response) => response,
+//     async (error) => {
+//         const originalRequest = error.config;
+//         console.log(originalRequest._retry);
+//         if (error.response && error.response.status === 403 && originalRequest._retry !== true) {
+//             const refreshToken = localStorage.getItem('refreshToken');
+//             originalRequest._retry = true;
+//             try {
+//                 const { data } = await instance.post('/auth/refresh-token', { refreshToken });
 
-        return Promise.reject(error);
-    },
-);
+//                 localStorage.setItem('accessToken', data.accessToken);
+//                 localStorage.setItem('refreshToken', data.refreshToken);
 
-instance.interceptors.response.use(
-    function (response) {
-        return response;
-    },
+//                 instance.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
 
-    function (error) {},
-);
+//                 return instance(originalRequest);
+//             } catch (refreshError) {
+//                 return Promise.reject(refreshError);
+//             }
+//         }
+
+//         return Promise.reject(error);
+//     },
+// );
 
 export default instance;
