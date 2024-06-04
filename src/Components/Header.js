@@ -4,12 +4,13 @@ import logo from '../assets/Image/image1.png';
 import logo1 from '../assets/Image/img5.png';
 import path from './Path';
 import { axiosDelete } from '../Services/UseServices';
-function Header(props) {
+function Header() {
     const navigate = useNavigate();
     const hanldeLogout = async () => {
         await axiosDelete('/auth/logout')
             .then((res) => {
                 localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
                 navigate('/login');
             })
             .catch((err) => {

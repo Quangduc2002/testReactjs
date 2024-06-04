@@ -40,17 +40,21 @@ function Profile(props) {
     }, [currentPage]);
 
     const hanldeGetPosts = async () => {
-        await axiosGet(`/posts?page=${currentPage ? currentPage : 1}`)
-            .then((res) => {
-                setPosts(res?.data?.posts);
-                setTotalProduct(res?.data?.total);
-                setTotalPage(res?.data?.total_page);
-                setTotalPageSize(res?.data?.page_size);
-                setCurrentPage(res?.data?.current_page);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        try {
+            await axiosGet(`/posts?page=${currentPage ? currentPage : 1}`)
+                .then((res) => {
+                    setPosts(res.data.posts);
+                    setTotalProduct(res.data.total);
+                    setTotalPage(res.data.total_page);
+                    setTotalPageSize(res.data.page_size);
+                    setCurrentPage(res.data.current_page);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const hanldeGetTags = async () => {

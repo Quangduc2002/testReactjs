@@ -1,14 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { axiosPost } from './UseServices';
-
 import axios from 'axios';
 const instance = axios.create({
     baseURL: 'https://api-test-web.agiletech.vn',
 });
 
-instance.defaults.headers.common['Authorization'] = `bearer ${localStorage.accessToken}`;
+// instance.defaults.headers.common['Authorization'] = `bearer ${localStorage.accessToken}`;
 instance.interceptors.request.use(
     function (config) {
+        config.headers.Authorization = `bearer ${localStorage.accessToken}`;
         return config;
     },
     function (error) {
@@ -16,30 +15,27 @@ instance.interceptors.request.use(
     },
 );
 
-// instance.interceptors.response.use(
-//     (response) => response,
-//     async (error) => {
-//         const originalRequest = error.config;
-//         console.log(originalRequest._retry);
-//         if (error.response && error.response.status === 403 && originalRequest._retry !== true) {
-//             const refreshToken = localStorage.getItem('refreshToken');
-//             originalRequest._retry = true;
-//             try {
-//                 const { data } = await instance.post('/auth/refresh-token', { refreshToken });
+instance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
 
-//                 localStorage.setItem('accessToken', data.accessToken);
-//                 localStorage.setItem('refreshToken', data.refreshToken);
+        if (error.response && error.response.status === 403) {
+            const refreshToken = localStorage.getItem('refreshToken');
+            try {
+                const { data } = await instance.post('/auth/refresh-token', { refreshToken });
+                localStorage.setItem('accessToken', data.accessToken);
+                localStorage.setItem('refreshToken', data.refreshToken);
+                instance.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
 
-//                 instance.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+                return instance(originalRequest);
+            } catch (refreshError) {
+                return Promise.reject(refreshError);
+            }
+        }
 
-//                 return instance(originalRequest);
-//             } catch (refreshError) {
-//                 return Promise.reject(refreshError);
-//             }
-//         }
-
-//         return Promise.reject(error);
-//     },
-// );
+        return Promise.reject(error);
+    },
+);
 
 export default instance;

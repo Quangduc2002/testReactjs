@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { axiosPost } from '../Services/UseServices';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import baseURL from '../Services/CutomizeAxios';
 
 function Login(props) {
@@ -29,10 +29,10 @@ function Login(props) {
 
     return (
         <div className="xl:w-[1120px] xs:w-auto xl:m-auto xs:mx-10 py-16 h-screen">
-            <div className="flex items-end gap-2">
+            <NavLink to={'/'} className="flex items-end gap-2">
                 <div className="bg-[#9C69E2] w-[20px] h-[20px] rounded-[20px]"></div>
                 <div className="bg-[#F063B8] w-[20px] h-[35px] rounded-[20px]"></div>
-            </div>
+            </NavLink>
 
             <div className="flex items-center justify-center h-full ">
                 <form onSubmit={hanldeSubmit}>
